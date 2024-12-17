@@ -29,7 +29,7 @@ int main() {
     bool visited[ROWS][COLUMNS] = {false};
 
     int row = 2, col = 4; // Начальная позиция: 3-й ряд, 5-й столбец
-    int filled = 0; // Личильник заполненных клеток
+    int filled = 0;       // Личильник заполненных клеток
 
     // 1. ТРИ шага влево
     for (int i = 0; i < 4 && col >= 0 && !visited[row][col]; i++) {
@@ -41,28 +41,61 @@ int main() {
     }
 
     // 2. ОДИН шаг вверх
-    if (row > 0 && !visited[row - 1][col]) {
+    if (row > 0 && !visited[row - 1][col + 1]) { // Убедиться, что можно подняться вверх
         row--; // Поднимаемся на одну клетку вверх
-        matrix[row][col + 1] = startArray[filled++];
-        visited[row][col + 1] = true;
+        col++; // Корректируем позицию для последующего движения вправо
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
         printf("Step %d:\n", filled);
         printMatrix(matrix, visited);
     }
 
     // 3. ВПРАВО до упора
-    do {col++; // Двигаемся вправо
+    while (col < COLUMNS - 1 && !visited[row][col + 1]) {
+        col++; // Двигаемся вправо
         matrix[row][col] = startArray[filled++];
         visited[row][col] = true;
         printf("Step %d:\n", filled);
         printMatrix(matrix, visited);
-    } while(col < COLUMNS - 1 && !visited[row][col + 1]);
+    }
 
     // 4. ВНИЗ до упора
+    while (row < ROWS - 1 && !visited[row + 1][col]) {
+        row++; // Двигаемся вниз
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+    }
 
-    // 5. ВЛЕВО до упора
+    // 6. ВЛЕВО до упора
+    while (col > 0 && !visited[row][col - 1]) {
+        col--; // Двигаемся влево
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+    }
 
-    // 6. ВВЕРХ до упора
+    // 7. ВВЕРХ до упора
+    while (row > 0 && !visited[row - 1][col]) {
+        row--; // Двигаемся вверх
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+    }
 
+    // 8. ВПРАВО до упора
+    while (col < COLUMNS - 1 && !visited[row][col + 1]) {
+        col++; // Двигаемся вправо
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+    }
+
+    
 
     return 0;
 }
