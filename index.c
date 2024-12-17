@@ -1,58 +1,61 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-void bubbleSort(float arr[], int arrLength) {
-    for (int i = 0; i < arrLength - 1; i++) {
-        for (int j = 0; j < arrLength - i - 1; j++) {
-            if (arr[j] < arr[j + 1]) {
-                float temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+#define ROWS 4
+#define COLUMNS 6
+
+void printMatrix(float matrix[ROWS][COLUMNS], bool visited[ROWS][COLUMNS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            if (visited[i][j]) {
+                printf("%6.1f ", matrix[i][j]);
+            } else {
+                printf("   x   ");
             }
         }
+        printf("\n");
     }
+    printf("\n");
 }
 
 int main() {
-    const int columns = 6;
-    const int rows = 4;
-    float startArray[24] = {
+    float startArray[ROWS * COLUMNS] = {
         10, 30, 10, 70, 65, 72,
         50, 72, 11, -49, -32, 18,
         98, -99, -12, 56, 65, 92,
         21, 86, 43, -45, 76, -98
     };
-    float matrix[rows][columns] = {};
-    float resultArr[columns] = {};
+    float matrix[ROWS][COLUMNS] = {0};
+    bool visited[ROWS][COLUMNS] = {false};
 
-    for (int col = 0; col < columns; col++) {
-        float product = 1;
-        bool hasNegative = false;
+    int row = 2, col = 4; // Начальная позиция: 3-й ряд, 5-й столбец
+    int filled = 0; // Личильник заполненных клеток
 
-        for (int row = 0; row < rows; row++) {
-            if (matrix[row][col] < 0) {
-                product *= matrix[row][col];
-                hasNegative = true;
-            }
-        }
-
-        if (hasNegative) {
-            resultArr[col] = product;
-        } else {
-            resultArr[col] = 0;
-        }
+    // 1. ТРИ шага влево
+    for (int i = 0; i < 4 && col >= 0 && !visited[row][col]; i++) {
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+        col--;
     }
 
-    printf("Resultant array: ");
-    for (int i = 0; i < columns; i++) {
-        printf("%.1f ", resultArr[i]);
+    // 2. ОДИН шаг вверх
+    if (row > 0 && !visited[row - 1][col]) {
+        row--; // Поднимаемся на одну клетку вверх
+        matrix[row][col + 1] = startArray[filled++];
+        visited[row][col + 1] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
     }
 
-    bubbleSort(resultArr, columns);
-    printf("\n");
-    for (int i = 0; i < columns; i++) {
-        printf("%.1f ", resultArr[i]);
-    }
+    // 3. ВПРАВО до упора
+    do {col++; // Двигаемся вправо
+        matrix[row][col] = startArray[filled++];
+        visited[row][col] = true;
+        printf("Step %d:\n", filled);
+        printMatrix(matrix, visited);
+    } while(col < COLUMNS - 1 && !visited[row][col + 1]);
 
     return 0;
 }
