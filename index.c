@@ -4,6 +4,18 @@
 #define ROWS 4
 #define COLUMNS 6
 
+void bubbleSort(float arr[], int arrLength) {
+    for (int i = 0; i < arrLength - 1; i++) {
+        for (int j = 0; j < arrLength - i - 1; j++) {
+            if (arr[j] < arr[j + 1]) {
+                float temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
 void printMatrix(float matrix[ROWS][COLUMNS], bool visited[ROWS][COLUMNS])
 {
     for (int i = 0; i < ROWS; i++)
@@ -33,6 +45,7 @@ int main()
         21, 86, 43, -45, 76, -98};
     float matrix[ROWS][COLUMNS] = {0};
     bool visited[ROWS][COLUMNS] = {false};
+    float resultArr[ROWS * COLUMNS] = {};
 
     int row = 2, col = 4; // Начальная позиция: 3-й ряд, 5-й столбец
     int filled = 0;       // Личильник заполненных клеток
@@ -106,6 +119,35 @@ int main()
         visited[row][col] = true;
         printf("Step %d:\n", filled);
         printMatrix(matrix, visited);
+    }
+
+    for (int col = 0; col < COLUMNS; col++) {
+        float product = 1;
+        bool hasNegative = false;
+
+        for (int row = 0; row < ROWS; row++) {
+            if (matrix[row][col] < 0) {
+                product *= matrix[row][col];
+                hasNegative = true;
+            }
+        }
+
+        if (hasNegative) {
+            resultArr[col] = product;
+        } else {
+            resultArr[col] = 0;
+        }
+    }
+
+    printf("Resultant array: ");
+    for (int i = 0; i < COLUMNS; i++) {
+        printf("%.1f ", resultArr[i]);
+    }
+
+    bubbleSort(resultArr, COLUMNS);
+    printf("\n");
+    for (int i = 0; i < COLUMNS; i++) {
+        printf("%.1f ", resultArr[i]);
     }
 
     return 0;
