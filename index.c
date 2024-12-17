@@ -58,14 +58,11 @@ int main() {
     } while(col < COLUMNS - 1 && !visited[row][col + 1]);
 
     // 4. ВНИЗ до упора
-    do {row++; // Двигаемся вниз
-        matrix[row][col] = startArray[filled++];
-        visited[row][col] = true;
-        printf("Step %d:\n", filled);
-        printMatrix(matrix, visited);
-    } while(row < ROWS - 1 && !visited[row + 1][col]);
 
-    //
+    // 5. ВЛЕВО до упора
+
+    // 6. ВВЕРХ до упора
+
 
     return 0;
 }
