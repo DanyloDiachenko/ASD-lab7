@@ -30,17 +30,18 @@ void printMatrix(float matrix[ROWS][COLUMNS], bool visited[ROWS][COLUMNS]) {
     printf("\n");
 }
 
-void moveAndFill(float matrix[ROWS][COLUMNS], bool visited[ROWS][COLUMNS], float startArray[], int *filled, int *row, int *col, int dRow, int dCol, int limit) {
-    for (int step = 0; step < limit; step++) {
-        int newRow = *row + dRow;
-        int newCol = *col + dCol;
+void moveAndFill(float matrix[ROWS][COLUMNS], bool visited[ROWS][COLUMNS],
+    float startArray[], int *filledElements, int *currentRow, int *currentCol, int directionRow, int directionCol, int stepLimit) {
+    for (int step = 0; step < stepLimit; step++) {
+        int newRow = *currentRow + directionRow;
+        int newCol = *currentCol + directionCol;
         if (newRow < 0 || newRow >= ROWS || newCol < 0 || newCol >= COLUMNS || visited[newRow][newCol]) {
             break;
         }
-        *row = newRow;
-        *col = newCol;
-        matrix[*row][*col] = startArray[(*filled)++];
-        visited[*row][*col] = true;
+        *currentRow = newRow;
+        *currentCol = newCol;
+        matrix[*currentRow][*currentCol] = startArray[(*filledElements)++];
+        visited[*currentRow][*currentCol] = true;
         printMatrix(matrix, visited);
     }
 }
@@ -72,7 +73,7 @@ int main() {
     moveAndFill(matrix, visited, startArray, &filled, &row, &col, 0, 1, COLUMNS - col - 1);
 
     for (int col = 0; col < COLUMNS; col++) {
-        float product = 1;
+        float product = 1.0;
         bool hasNegative = false;
 
         for (int row = 0; row < ROWS; row++) {
