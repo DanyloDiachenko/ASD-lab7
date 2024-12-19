@@ -54,10 +54,10 @@ int main() {
         21, 86, 43, -45, 76, -98
     };
     float matrix[ROWS][COLUMNS] = {0};
-    bool visited[ROWS][COLUMNS] = {false};
     float resultArr[COLUMNS] = {};
-
-    int row = 2, col = 4;
+    bool visited[ROWS][COLUMNS] = {false};
+    int row = 2;
+    int col = 4;
     int filled = 0;
 
     matrix[row][col] = startArray[filled++];
